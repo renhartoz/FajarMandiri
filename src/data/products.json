@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "image": "image/upload/v1757265827/bnpfwpdx2yr7eybafs2c.png",
+        "title": "Limit Fungsi",
+        "desc": "Konsep dasar dalam kalkulus dan analisis mengenai hasil fungsi di dekat input tertentu.",
+        "subject": "MTK",
+        "level": "Beginner",
+        "free": true,
+        "href": "/course/limit"
+    },
+    {
+        "id": 2,
+        "image": "image/upload/v1757267944/kwhipxbutksz5m4sbpos.png",
+        "color": "#FF5733",
+        "title": "Derivatif",
+        "desc": "Konsep dasar dalam kalkulus untuk mengukur intensitas perubahan nilai fungsi.",
+        "subject": "MTK",
+        "level": "Beginner",
+        "free": true,
+        "href": "/course/deriv"
+    }
+]
