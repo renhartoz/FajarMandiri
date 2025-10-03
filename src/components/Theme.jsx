@@ -1,8 +1,6 @@
 import {
     createTheme,
     ThemeProvider,
-    alpha,
-    getContrastRatio,
 } from "@mui/material";
 
 export default function Theme(props) {
@@ -111,10 +109,10 @@ export default function Theme(props) {
     };
 
     // ——— Core primary/secondary/etc. ———
-    const primary = { dark: "#1565c0", main: "#1976d2", light: "#42a5f5" };
+    const primary = { dark: "#838930ff", main: "#c5c54cff", light: "#fffba6ff" };
     const secondary = { dark: "#00786d", main: "#009688", light: "#33aba0" };
     const tertiary = { dark: "#b72e2a", main: "#e53935", light: "#ea615d" };
-    const quaternary = { dark: "#cc8000", main: "#ffa000", light: "#ffb333" };
+    const quaternary = { dark: "#1565c0", main: "#1976d2", light: "#42a5f5" };
 
     // extras
     const kuraiAodark = "#0A2472";
@@ -151,7 +149,7 @@ export default function Theme(props) {
             deepslate,
         },
         typography: {
-            fontFamily: '"Apercu", "Inter", "DM Sans", sans-serif',
+            fontFamily: '"Inter", "DM Sans", sans-serif',
         },
     });
 

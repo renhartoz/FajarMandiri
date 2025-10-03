@@ -1,33 +1,29 @@
 import React from "react";
 import {
-    Card,
+    Card as MuiCard,
     CardContent,
     CardMedia,
     Typography,
     Box,
-    Divider,
     Chip,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
-export default function CourseCard({
+export default function Card({
     image,
-    title,
-    desc,
-    level,
-    duration,
-    free,
-    subject,
+    productName,
+    price,
+    featured,
+    brand,
     color = "primary",
     href,
-    isExercise = false,
     maxChar = null,
     sx={}
 }) {
 
     return (
         <Link to={href ? href : "/comingsoon"}>
-            <Card
+            <MuiCard
                 sx={{
                     width: "100%",
                     border: "4px solid black",
@@ -42,18 +38,18 @@ export default function CourseCard({
                     ...sx
                 }}
             >
-                {/* Course Image with Subject Chip */}
+                {/* Course Image with brand Chip */}
                 <Box sx={{ position: "relative" }}>
                     <CardMedia
                         component="img"
                         height="140"
                         image={image||"/no_image.jpg"}
-                        alt={title}
+                        alt={productName}
                         sx={{ borderBottom: "4px solid black" }}
                     />
 
-                    {/* Subject Chip */}
-                    {subject && (
+                    {/* brand Chip */}
+                    {brand && (
                         <Chip
                             label={
                                 <Typography
@@ -61,7 +57,7 @@ export default function CourseCard({
                                     fontWeight="bold"
                                     fontSize={"1em"}
                                 >
-                                    {subject}
+                                    {brand}
                                 </Typography>
                             }
                             size="small"
@@ -76,37 +72,25 @@ export default function CourseCard({
                 </Box>
 
                 {/* free Course Label */}
-                <Box
-                    sx={{
-                        backgroundColor: free
-                            ? "secondary.main"
-                            : "tertiary.main",
-                        px: 1,
-                        py: 0.5,
-                    }}
-                >
-                    {isExercise ? (
-                        <>
-                            <Typography
-                                variant="body2"
-                                fontWeight="bold"
-                                color="#fff"
-                            >
-                                {free ? "Free exercise" : "Paid exercise"}
-                            </Typography>
-                        </>
-                    ) : (
-                        <>
-                            <Typography
-                                variant="body2"
-                                fontWeight="bold"
-                                color="#fff"
-                            >
-                                {free ? "Free course" : "Paid course"}
-                            </Typography>
-                        </>
-                    )}
-                </Box>
+                {featured && (
+                    <Box
+                        sx={{
+                            backgroundColor: free
+                                ? "secondary.main"
+                                : "tertiary.main",
+                            px: 1,
+                            py: 0.5,
+                        }}
+                    >
+                        <Typography
+                            variant="body2"
+                            fontWeight="bold"
+                            color="#fff"
+                        >
+                            Featured
+                        </Typography>
+                    </Box>
+                )}
 
                 {/* Course Details */}
                 <CardContent>
@@ -115,9 +99,9 @@ export default function CourseCard({
                         fontWeight="bold"
                         color={color.main || "primary"}
                     >
-                        {maxChar && title.length > maxChar ? `${title.slice(0, maxChar-3)}...` : title}
+                        {maxChar && productName.length > maxChar ? `${productName.slice(0, maxChar-3)}...` : productName}
                     </Typography>
-                    {desc && (
+                    {price && (
                         <Typography
                             variant="body2"
                             color="text.secondary"
@@ -132,26 +116,11 @@ export default function CourseCard({
                                 },
                             }}
                         >
-                            {desc}
+                            {price}
                         </Typography>
                     )}
-
-                    {/* Footer: Level & Duration */}
-                    {duration && level && (
-                        <>
-                            <Divider sx={{ my: 2, borderStyle: "dotted" }} />
-                            <Box display="flex" justifyContent="space-between">
-                                <Typography variant="body2" fontWeight="bold">
-                                    {level}
-                                </Typography>
-                                <Typography variant="body2" fontWeight="bold">
-                                    {duration}
-                                </Typography>
-                            </Box>
-                        </>
-                    )}
                 </CardContent>
-            </Card>
+            </MuiCard>
         </Link>
     );
 }

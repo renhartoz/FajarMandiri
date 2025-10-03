@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import {
     Box,
     Stack,
-    Grid2,
+    Grid,
     Typography,
     Divider,
     useMediaQuery,
@@ -11,15 +11,16 @@ import {
     IconButton,
     Chip
 } from "@mui/material";
-import CourseCard from "../components/Card";
+import Card from "../components/Card";
 import CustomInput from "../form/CustomInput";
 import CustomCheck from "../form/CustomCheck";
 import Button from "../components/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import CloseIcon from "@mui/icons-material/Close";
-import api from "../services/auth";
+import productsData from "../data/products.json";
 
+const products_data = productsData;
 export default function Products({ admin }) {
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
@@ -27,22 +28,15 @@ export default function Products({ admin }) {
     const isMobile = useMediaQuery("(max-width:900px)");
     const [openDrawer, setOpenDrawer] = useState(false);
 
+    useEffect(() => {
+        setProducts(products_data);
+    }, []);
+
     if (query.size) {
         useEffect(() => {
             setSearch(query.get("search"));
         }, []);
     }
-
-    useEffect(()=>{
-        api.get('/course/')
-        .then(res=>{
-            if (!admin) setProducts(res.data.filter(c=>c?.published===true));
-            else setProducts(res.data);
-        })
-        .catch(err=>{
-            console.error(err);
-        })
-    }, []);
 
     const [products, setProducts] = useState([]);
     const [subject, setSubject] = useState([]);
@@ -86,13 +80,13 @@ export default function Products({ admin }) {
     ];
 
     const filteredProducts = products.filter(
-        (course) =>
-            course.title.toLowerCase().includes(search.toLowerCase()) &&
-            (subject.length === 0 || subject.includes(course.subject)) &&
+        (product) =>
+            product.title.toLowerCase().includes(search.toLowerCase()) &&
+            (subject.length === 0 || subject.includes(product.subject)) &&
             (paid.length === 0 ||
-                (paid.includes("FREE") && course.free) ||
-                (paid.includes("PAID") && !course.free)) &&
-            (level.length === 0 || level.includes(course.level))
+                (paid.includes("FREE") && product.free) ||
+                (paid.includes("PAID") && !product.free)) &&
+            (level.length === 0 || level.includes(product.level))
     );
 
     useEffect(()=>{
@@ -105,15 +99,15 @@ export default function Products({ admin }) {
                 <Stack px={4} py={2} direction={'row'} alignItems={'center'} justifyContent={'space-between'} borderBottom={'1px solid #000'}>
                     <Stack direction={'row'} alignItems={'center'} gap={3}>
                         <Typography fontSize={'2.5em'} color="primary" fontWeight={1200}>
-                            Course List
+                            Product List
                         </Typography>
                         <Chip label={ <Typography fontSize="1.2em" fontFamily={"monospace"}>{product_len} results</Typography> } size="small" sx={{color:"#fff", backgroundColor: "#000", px:1, py:2}} />
                     </Stack>
-                    {admin&&<Button bgcolor={'secondary'} onClick={()=>navigate('edit')}>Create Course</Button>}
+                    {admin&&<Button bgcolor={'secondary'} onClick={()=>navigate('edit')}>Create Product</Button>}
                 </Stack>
-                <Grid2 container columns={4} border={'1px solid #000'} borderRight={'none'} mb={5}>
+                <Grid container columns={4} border={'1px solid #000'} borderRight={'none'} mb={5}>
                     {!isMobile && (
-                        <Grid2 size={1}
+                        <Grid size={1}
                             sx={{
                                 height: "100%",
                                 overflowY: "auto",
@@ -188,16 +182,16 @@ export default function Products({ admin }) {
                                     </React.Fragment>
                                 ))}
                             </Stack>
-                        </Grid2>
+                        </Grid>
                     )}
 
-                    <Grid2 size={{xs:4,md:3}}>
+                    <Grid size={{xs:4,md:3}}>
                         <Box
                             sx={{
                                 px:3,
                                 py:4,
                             }}
-                            id="course"
+                            id="product"
                         >
                             <Stack mb={4} direction="row" alignItems="center" gap={2}>
                                 {/* Search Input */}
@@ -228,21 +222,20 @@ export default function Products({ admin }) {
                                 )}
                             </Stack>
 
-                            {/* Course Grid2 */}
-                            <Grid2 container spacing={6} justifyContent="center">
-                                {filteredProducts.map((course) => (
-                                    <Grid2 key={course.id} width={300}>
+                            <Grid container spacing={6} justifyContent="center">
+                                {filteredProducts.map((product) => (
+                                    <Grid key={product.id} width={300}>
                                         {admin?(
-                                            <CourseCard {...course} href={`edit/${course.id}`} image={`https://res.cloudinary.com/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/${course.image}`} />
+                                            <Card {...product} href={`edit/${product.id}`} />
                                         ):(
-                                            <CourseCard {...course} image={`https://res.cloudinary.com/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/${course.image}`} />
+                                            <Card {...product}  />
                                         )}
-                                    </Grid2>
+                                    </Grid>
                                 ))}
-                            </Grid2>
+                            </Grid>
                         </Box>
-                    </Grid2>
-                </Grid2>
+                    </Grid>
+                </Grid>
             </Stack>
             <Drawer
                 anchor="left"

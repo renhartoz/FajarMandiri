@@ -6,22 +6,21 @@ import {
     Stack,
     Typography,
     Container,
-    Grid2,
+    Grid,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Carousel from "../components/Carousel";
 import Tiles from "../components/Tiles";
 import CustomInput from "../form/CustomInput";
 import Button from "../components/Button";
-import CourseCard from "../components/Card";
+import Card from "../components/Card";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import courses_data from "../data/course.json";
-import exercise_data from "../data/exercise.json";
+import products_data from "../data/products.json";
 
-const courses = courses_data.slice(0, 4);
-const exercises = exercise_data.slice(0, 4);
+const featured_products = products_data.filter(item => item.featured === true).slice(0, 4);
 
 export default function Home() {
+    const repeatText = "Operasional Senin-Sabtu (09:00-16:00 WIB), Minggu dan Hari Raya Libur";
     const slides = [
         {
             bg: "/hero/hero_1.png",
@@ -49,12 +48,23 @@ export default function Home() {
     const nav = useNavigate();
     const handleKeyPress = (event) => {
         if (event.key === "Enter") {
-            nav(`/course?search=${encodeURIComponent(search)}`);
+            nav(`/products?search=${encodeURIComponent(search)}`);
         }
     };
     return (
         <>
             <Stack direction={"column"} sx={{ backgroundColor: "#f5f5f5" }}>
+                <Box sx={{ 
+                    overflow: 'hidden', 
+                    width: '100%', 
+                    display: 'flex', 
+                    justifyContent: 'flex-end',
+                    py: { xs: 1, sm: 3 },
+                }}>
+                    <Typography variant="h4" fontSize={20} className="infinite-scroll" sx={{ display: 'inline-block' }}>
+                        {repeatText}
+                    </Typography>
+                </Box>
                 <Carousel slides={slides} time={5000} />
                 <Stack p={"5vh 3vw"}>
                     <CustomInput
@@ -91,9 +101,9 @@ export default function Home() {
                                 fontSize={{ xs: "2em", sm: "3.5em" }}
                                 color="secondary"
                             >
-                                Alur Pembelajaran
+                                Featured Products
                             </Typography>
-                            <Link to={"/course"}>
+                            <Link to={"/products"}>
                                 <Typography color="primary" fontSize={"1em"}>
                                     Lihat Semua
                                 </Typography>
@@ -109,10 +119,9 @@ export default function Home() {
                         fontSize={{ xs: ".9em", sm: "1em", md: "1.2em" }}
                         sx={{ mb: 2 }}
                     >
-                        Mempelajari kursus terpercaya dengan mengikuti silabus
-                        dan konsep yang telah kami design
+                        Produk terbaru dan terpopuler dari Fajar Mandiri Cemerlang
                     </Typography>
-                    <Grid2
+                    <Grid
                         container
                         spacing={2}
                         direction={"row"}
@@ -120,8 +129,8 @@ export default function Home() {
                         alignItems={"center"}
                         columns={{ xs: 1, sm: 2, md: 2, lg: 4 }}
                     >
-                        {courses.map((item) => (
-                            <Grid2
+                        {products_data.map((item) => (
+                            <Grid
                                 key={item.id}
                                 size={1}
                                 display={"flex"}
@@ -133,84 +142,14 @@ export default function Home() {
                                     alignItems={"center"}
                                     width={300}
                                 >
-                                    <CourseCard {...item} image={`https://res.cloudinary.com/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/${item.image}`} />
+                                    <Card {...item}/>
                                 </Stack>
-                            </Grid2>
+                            </Grid>
                         ))}
-                    </Grid2>
+                    </Grid>
                 </Stack>
             </Stack>
-            <Stack direction={"column"} sx={{ backgroundColor: "#e5edff" }}>
-                <Stack
-                    direction={"column"}
-                    gap={2}
-                    sx={{
-                        padding: "2% 3%",
-                    }}
-                    justifyContent={"center"}
-                >
-                    <Stack>
-                        <Stack
-                            direction={"row"}
-                            alignItems={"center"}
-                            justifyContent={"space-between"}
-                        >
-                            <Typography
-                                variant="h3"
-                                textAlign={{ xs: "center", sm: "justify" }}
-                                component={"h1"}
-                                fontSize={{ xs: "2em", sm: "3.5em" }}
-                                color="#DB6400"
-                            >
-                                Uji Kompetensi
-                            </Typography>
-                            <Link to={"/exercise"}>
-                                <Typography color="#DB6400" fontSize={"1em"}>
-                                    Lihat Semua
-                                </Typography>
-                            </Link>
-                        </Stack>
-                        <Divider
-                            sx={{ border: ".3vh solid #222", width: "100%" }}
-                        />
-                    </Stack>
-                    <Typography
-                        textAlign={"justify"}
-                        color="black_blue"
-                        fontSize={{ xs: ".9em", sm: "1em", md: "1.2em" }}
-                        sx={{ mb: 2 }}
-                    >
-                        Kumpulan soal-soal latihan berkualitas yang telah
-                        didesain sedemikian rupa untuk menguji kemampuan Anda
-                    </Typography>
-                    <Grid2
-                        container
-                        spacing={2}
-                        direction={"row"}
-                        justifyContent={"center"}
-                        alignItems={"center"}
-                        columns={{ xs: 1, sm: 2, md: 2, lg: 4 }}
-                    >
-                        {exercises.map((item) => (
-                            <Grid2
-                                key={item.id}
-                                size={1}
-                                display={"flex"}
-                                justifyContent={"center"}
-                                alignItems={"center"}
-                            >
-                                <Stack
-                                    justifyContent={"center"}
-                                    alignItems={"center"}
-                                    width={300}
-                                >
-                                    <CourseCard {...item} maxChar={20} />
-                                </Stack>
-                            </Grid2>
-                        ))}
-                    </Grid2>
-                </Stack>
-            </Stack>
+            
             <Stack
                 sx={{
                     width: "100%",
@@ -478,7 +417,7 @@ export default function Home() {
                         </Typography>
                     </Stack>
 
-                    <Grid2 container spacing={1.6} direction={"column"}>
+                    <Grid container spacing={1.6} direction={"column"}>
                         {[
                             "Gratis Akses 200+ Kursus Online",
                             "Gratis Akses Event Premium",
@@ -487,7 +426,7 @@ export default function Home() {
                             "Dukungan Prioritas CS",
                             "Sertifikat sesuai Jam Pelajaran yang diikuti",
                         ].map((item, index) => (
-                            <Grid2 key={index}>
+                            <Grid key={index}>
                                 <Stack
                                     direction="row"
                                     alignItems="center"
@@ -507,9 +446,9 @@ export default function Home() {
                                         {item}
                                     </Typography>
                                 </Stack>
-                            </Grid2>
+                            </Grid>
                         ))}
-                    </Grid2>
+                    </Grid>
 
                     {/* Buttons */}
                     <Stack
